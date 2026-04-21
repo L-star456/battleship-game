@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚓ Battleship Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>⚓ Battleship</h1>
+    <p class="subtitle">Klassiskt sjöslaget</p>
+  </header>
+
+
+  <div id="joinScreen" class="screen active">
+    <div class="card join-card">
+      <h2>Anslut till ett spel</h2>
+      <p class="instruction">Ange ett Game ID för att spela mot en vän</p>
+      
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="gameIdInput" 
+          placeholder="t.ex. game1" 
+          value="game1"
+        >
+      </div>
+
+      <button class="btn btn-primary" onclick="joinGame()">
+        Anslut
+      </button>
+
+      <div id="joinMessage" class="message-zone"></div>
+
+      <div class="info-box">
+        <h3>Hur det fungerar:</h3>
+        <ol>
+          <li>Öppna två flikar på samma URL</li>
+          <li>Använd samma Game ID i båda flikarna</li>
+          <li>Båda spelarna placerar sina fartyg</li>
+          <li>Spela! Växla på att skjuta</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  
+   <div id="placementScreen" class="screen">
+    <h2>Placera dina fartyg</h2>
+    
+    <div class="placement-wrapper">
+      <div class="placement-left">
+        <div class="ship-guide">
+          <h3>Fartygens storlek:</h3>
+          <ul>
+            <li>🚢 <strong>5 rutor</strong></li>
+            <li>⛴️ <strong>4 rutor</strong></li>
+            <li>🚤 <strong>3 rutor</strong></li>
+            <li>🚤 <strong>3 rutor</strong></li>
+            <li>🛥️ <strong>2 rutor</strong></li>
+          </ul>
+        </div>
+
+        <div class="placement-status">
+          <p id="currentShip">Börja med det större fartyget</p>
+          <p id="placementProgress"></p>
+        </div>
+
+        <div class="placement-controls">
+          <label class="checkbox-label">
+            <input type="checkbox" id="horizontalToggle" checked>
+            <span>Horisontell →</span>
+          </label>
+        </div>
+
+        <button class="btn btn-secondary" onclick="clearShips()">
+          Rensa
+        </button>
+
+        <button 
+          class="btn btn-primary" 
+          onclick="readyToPlay()" 
+          id="readyBtn" 
+          disabled
+        >
+          Börja spela →
+        </button>
+
+        <div id="placementMessage" class="message-zone"></div>
+      </div>
+
+      <div class="placement-right">
+        <div id="placementGrid" class="grid"></div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="gameScreen" class="screen">
+    <div class="game-status">
+      <h2 id="status"></h2>
+    </div>
+
+    <div class="game-grids">
+      <div class="board-section">
+        <h3>🎯 Fiendens vatten</h3>
+        <div id="enemyGrid" class="grid"></div>
+        <p id="enemy-stats" class="stats"></p>
+      </div>
+
+      <div class="board-section">
+        <h3>🛡️ Ditt försvar</h3>
+        <div id="yourGrid" class="grid"></div>
+        <p id="your-stats" class="stats"></p>
+      </div>
+    </div>
+
+    <div id="gameMessage" class="message-zone"></div>
+  </div>
+
+
+  <div id="opponentLeftScreen" class="screen">
+    <div class="card error-card">
+      <h2>Motståndaren lämnade</h2>
+      <p>Spelet är slut.</p>
+      <button class="btn btn-primary" onclick="location.reload()">Tillbaka</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="gameOverOverlay" class="overlay">
+  <div class="overlay-box">
+    <h2 id="gameOverMessage"></h2>
+    <p id="gameOverSubtext"></p>
+    <button class="btn btn-primary" onclick="location.reload()">Spela igen</button>
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="game.js"></script>
+
+</body>
+</html>
